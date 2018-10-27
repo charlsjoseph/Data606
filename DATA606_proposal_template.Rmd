@@ -1,0 +1,367 @@
+---
+title: "DATA 606 Data Project Proposal"
+author: "Charls Joseph"
+---
+
+### Data Preparation
+
+Two datasets are provided.  the original dataset, in the form provided by Prof. Hofmann, contains categorical/symbolic attributes and is in the file "german.data".   
+ 
+For algorithms that need numerical attributes, Strathclyde University produced the file "german.data-numeric"
+
+I decided to use the orginal data file(the original data file). There are 20 columns and the column descriptions are provided in german.doc. I created a vector for all headers listed in the german.doc.
+
+Below R code snippet reads data from the german.data data file, creates a dataframe with prepared header values. 
+
+```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+germanCreditDF <- read.delim("C:/Users/Charls/Documents/CunyMSDS/606-Statistical Analsyis/final-project/data/german.data.txt", sep = " ", header = F)
+
+column_headers <-  c("checkingAcc", "Duration", "Credit_Hist", "Purpose" ,"Credit_Amt" , "SavingsAcc" , "Employment_Stat", "Installment_rate", "personal_stat" , "deptor_stat" ,"residence_in_years" ,"Property" , "age","other_instalment_plans" , "Housing" , "no_of_credits" ,"Job_type" , "no_liable" , "Telephone" , 
+"foreign_worker", "Customer_class" )
+
+colnames(germanCreditDF) <- column_headers
+```
+
+The structure of the dataframe is as below. Along with 20 feature metrics, we have a response variable called Customer_class ( Value = 1 means Good, Value = 2 means Bad Credit risk). 
+```{r}
+str(germanCreditDF)
+
+```
+
+
+### Research question 
+
+1. Find the signifance of few quantitive and qualitative variables( Duration , Credit_Amt , age , foreign_worker , Employment_Stat , Purpose and credit_hist) on the response variable. Using backword elimination process, find out the most significant variable which is highly correlated to the response variable. 
+
+2. From the inference analysis, we noted that there is an anomaly on credit_hist. Critical credits having a higher approval rate and considered to be a good customer. Find what is the reason behind this observation ?
+
+3. Try different machine learning models to predict the customer class based on most significant variables identified above and guage their accuracy using confusion matrix and other means. 
+
+
+### Cases 
+
+The cases are the observations on different customers who appied for a credit in a german bank and bank's decision weather the credit would be approved or not. The observations are the details regarding like their credit history, employment, credit amount, purpose and bank details. 
+
+There are 1000 cases in the dataset for this research activity. 
+
+### Data collection 
+
+The data is available in UCI Machine Learning Repository :  http://archive.ics.uci.edu/ml/datasets.html and is downloaded to perform the research study on the regression.  
+
+
+### Type of study 
+
+This is an observational study, since we are doing analysis on the dataset collected as observation
+
+
+### Data Source 
+
+The data is available in UCI Machine Learning Repository :  http://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29
+
+Dua, D. and Karra Taniskidou, E. (2017). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.
+
+
+### Dependent Variable
+
+Customer_class is the response variable. This is qualititive variable whether a bank is considering his credit application or not. If the bank approves, the customer is classifies as good, otherwise not. 
+
+
+### Independent Variable
+
+There are 20 independent Variables including the quantitative and qualitative variables. 
+
+
+* **checkingAcc**:  (qualitative)
+      + Status of existing checking account
+         -  A11 :      ... <    0 DM
+	       - A12 : 0 <=  ... <  200 DM
+	       - A13 :       ... >= 200 DM /salary assignments for at least 1 year
+	       - A14 : no checking account
+
+* **Duration**:  (numerical)
+      + Duration in month
+
+* **Credit_Hist**:  (qualitative)
+      + Credit history
+        - A30 : no credits taken/ all credits paid back duly
+	      - A31 : all credits at this bank paid back duly
+	      - A32 : existing credits paid back duly till now
+	      - A33 : delay in paying off in the past
+	      - A34 : critical account/other credits existing (not at this bank)
+
+* **Purpose** :  (qualitative)
+      + Purpose
+	      - A40 : car (new)
+	      - A41 : car (used)
+	      - A42 : furniture/equipment
+	      - A43 : radio/television
+	      - A44 : domestic appliances
+	      - A45 : repairs
+	      - A46 : education
+	      - A47 : (vacation - does not exist?)
+	      - A48 : retraining
+	      - A49 : business
+	      - A410 : others
+
+* **Credit_Amt**:  (numerical)
+	      + Credit amount
+
+* **SavingsAcc**:  (qualitative)
+      + Savings account/bonds
+	      - A61 :          ... <  100 DM
+	      - A62 :   100 <= ... <  500 DM
+	      - A63 :   500 <= ... < 1000 DM
+	      - A64 :          .. >= 1000 DM
+        - A65 :   unknown/ no savings account
+
+* **Employment_Stat**:  (qualitative) 
+      + Present employment since
+	     - A71 : unemployed
+	     - A72 :       ... < 1 year
+	     - A73 : 1  <= ... < 4 years  
+	     - A74 : 4  <= ... < 7 years
+	     - A75 :       .. >= 7 years
+
+* **Installment_rate**:  (numerical)
+      + Installment rate in percentage of disposable income
+
+* **personal_stat**:  (qualitative)
+      + Personal status and sex
+	      - A91 : male   : divorced/separated
+	      - A92 : female : divorced/separated/married
+        - A93 : male   : single
+	      - A94 : male   : married/widowed
+	      - A95 : female : single
+
+* **deptor_stat**: (qualitative)
+      + Other debtors / guarantors
+	      - A101 : none
+	      - A102 : co-applicant
+	      -A103 : guarantor
+
+* **residence_in_years**: (numerical)
+      + Present residence since
+
+* **Property**: (qualitative) 
+      + Property
+	      - A121 : real estate
+	      - A122 : if not A121 : building society savings agreement/life insurance
+        - A123 : if not A121/A122 : car or other, not in attribute 6
+	      - A124 : unknown / no property
+
+* **age**: (numerical)
+      + Age in years
+
+* **other_instalment_plans**: (qualitative)
+      + Other installment plans 
+	      - A141 : bank
+	      - A142 : stores
+	      - A143 : none
+
+* **Housing**: (qualitative)
+	     + Housing
+	      - A151 : rent
+	      - A152 : own
+	      - A153 : for free
+
+* **no_of_credits**: (numerical)
+      + Number of existing credits at this bank
+
+* **Job_type**: (qualitative)
+      + Job
+	      - A171 : unemployed/ unskilled  - non-resident
+	      - A172 : unskilled - resident
+	      - A173 : skilled employee / official
+	      - A174 : management/ self-employed/highly qualified employee/ officer
+
+* **no_liable**: (numerical)
+      + Number of people being liable to provide maintenance for
+
+* **Telephone**: (qualitative)
+      + Telephone
+	      - A191 : none
+	      - A192 : yes, registered under the customers name
+
+* **foreign_worker** : (qualitative)
+    + foreign worker
+	      - A201 : yes
+	      - A202 : no
+
+
+
+
+### Relevant summary statistics 
+
+**Provide summary statistics for each the variables. Also include appropriate visualizations related to your research question (e.g. scatter plot, boxplots, etc). This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+
+Lets look from some basic inference by looking at the distribution and the box plot graph. Based on this analysis, we will derive our research questions. 
+
+Firstly we will look for distribution of some of the quantitive variables.  
+
+**Duration**
+
+Below is the histogram and the box plot of the 'Duration' variable. 
+The histogram shows it is slightly right skewed, the box plot shows that the median for good customer class is less than the bad customer class. However there are presence of outliers for good customer class which also means that there can be some other factors which co-relates to the response variable. 
+
+With respect to the spread, the good customer class is more condensed than the bad customer class. In short, it doesnt show a much of significance towards the response variable. 
+
+```{r}
+
+hist(germanCreditDF$Duration)
+germanCreditDF$class <- sapply(germanCreditDF$Customer_class, function(x){
+  switch(as.character(x), "1" = "Good", "2" = "Bad")
+})
+library(ggplot2)
+ggplot(germanCreditDF, aes(x=class, y=Duration)) + 
+  geom_boxplot(color="red", fill="orange", alpha=0.2)
+
+```
+
+Lets move on to some other Quantitive variable. 
+
+**Credit_Amt**
+
+As per the box plot, we dont see much of significance. The median is more or less same, 
+The good customer is more condensed than the bad customer class. 
+Noted that the there are more outliers for good customer class. 
+
+```{r}
+# Quantitive variable comparison(using Boxplots)
+
+hist(germanCreditDF$Credit_Amt)
+
+# Set a unique color with fill, colour, and alpha
+ggplot(germanCreditDF, aes(x=class, y=Credit_Amt)) + 
+  geom_boxplot(color="red", fill="orange", alpha=0.2)
+
+
+```
+
+**no_of_credits**
+
+The box plot for both class looks same. Hence I'm assuming that there is no significance of no_of_credits towards the response variable. 
+
+```{r}
+
+
+hist(germanCreditDF$no_of_credits)
+
+
+ggplot(germanCreditDF, aes(x=class, y=no_of_credits)) + 
+  geom_boxplot(color="red", fill="orange", alpha=0.2)
+
+```
+
+**age**
+
+Based on boxplot, we dont see much of a significance of age too on both group since median is more or less same. And spread is overlapping. 
+
+```{r}
+hist(germanCreditDF$age)
+
+
+ggplot(germanCreditDF, aes(x=class, y=age)) + 
+  geom_boxplot(color="red", fill="orange", alpha=0.2)
+
+```
+
+
+We are running out of all quantitive variables. Lets look at some of the qualitative variables by looking at the contigency tables, contitional probabilties(column wise) and few stacked histograms. 
+
+**foreign_worker**
+
+The conditinal probabilty says that the although the number of non-foreign applicants is less, the probabily of approving their application is more compaired to the foreign applicants. However noted that there are more number of foreign applicants. 
+
+```{r}
+
+# Qualitive variable comparison(using congidency table)
+library(dplyr)
+# Contigency table
+foreignDF <- germanCreditDF %>% select(class, foreign_worker)
+table(foreignDF)
+
+
+# Contitional probabily table
+
+prop.table(table(foreignDF), 2)
+
+# side barplot of contigency table
+
+barplot(table(foreignDF), beside =  T, legend = T, main = "foreign v/s customer class", col=c("coral", "aquamarine3"), xlab = "foreign_worker - A201 : yes - A202 : no")
+
+
+```
+
+**Employment_Stat**
+
+Unemployment and less no of years shows lower approval rate. So there looks to be some relation exist. 
+
+```{r}
+
+# Qualitive variable comparison(using congidency table)
+library(dplyr)
+# Contigency table
+employmentDF <- germanCreditDF %>% select(class, Employment_Stat)
+table(employmentDF)
+
+
+# Contitional probabily table
+
+prop.table(table(employmentDF), 2)
+
+# side barplot of contigency table
+
+barplot(table(employmentDF), beside =  T, legend = T, main = "Employment v/s customer class", col=c("coral", "aquamarine3"))
+
+
+```
+
+
+**Purpose**
+
+Contitional probabilty says that the used cars application as higher approval rate. 
+and education credit application has more or less same chances to get approved or rejected. So there looks to be some relation exist. 
+
+```{r}
+# Qualitive variable comparison(using congidency table)
+library(dplyr)
+# Contigency table
+PurposeDF <- germanCreditDF %>% select(class, Purpose)
+table(PurposeDF)
+
+
+# Contitional probabily table
+
+prop.table(table(PurposeDF), 2)
+
+# side barplot of contigency table
+
+barplot(table(PurposeDF), beside =  T, legend = T, main = "Purpose v/s customer class", col=c("coral", "aquamarine3"))
+
+```
+
+
+
+**Credit_Hist**
+
+'A34 : critical account/other credits existing' is having higher approval rate which looks strange. Either there is a data anomaly or some other relation is overriding the significance of this variable. 
+
+'A33 : delay in paying off in the past' shows higher approval rate. 
+
+```{r}
+
+# Qualitive variable comparison(using congidency table)
+# Contigency table
+Credit_HistDF <- germanCreditDF %>% select(class, Credit_Hist)
+table(Credit_HistDF)
+
+
+# Contitional probabily table
+
+prop.table(table(Credit_HistDF), 2)
+
+# side barplot of contigency table
+
+barplot(table(Credit_HistDF), beside =  T, legend = T, main = "Credit_History v/s customer class", col=c("coral", "aquamarine3"))
+```
+
